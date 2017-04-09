@@ -11,6 +11,8 @@
     <name>Logback Kafka Appender</name>
     <description>Appender for logback to send messages to Apache Kafka</description>
 
+    <url>https://github.com/prince89arora/logback-kafka-appender</url>
+
     <properties>
         <java.version.source>1.7</java.version.source>
         <java.version.target>1.7</java.version.target>
