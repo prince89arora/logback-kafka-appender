@@ -7,5 +7,5 @@ package lb.kafka.producer;
  */
 public enum DeliveryType {
     NORMAL,
-    ASYNC
+    YIElD
 }

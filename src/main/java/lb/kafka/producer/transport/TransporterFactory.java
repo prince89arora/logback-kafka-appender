@@ -27,7 +27,7 @@ public final class TransporterFactory {
                 transporter = new NormalTransporter(producer);
                 break;
 
-            case ASYNC:
+            case YIElD:
                 transporter = new YieldTransporter(producer);
                 break;
 
