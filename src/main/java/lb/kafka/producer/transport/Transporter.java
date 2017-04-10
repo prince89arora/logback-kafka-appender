@@ -26,5 +26,5 @@ public interface Transporter {
     *
     * @return
     */
-   boolean transport(byte[] bytes, Callback callback);
+   boolean transport(final byte[] bytes, Callback callback);
 }

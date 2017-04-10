@@ -1,9 +1,10 @@
 package lb.kafka.logback.appender;
 
-import ch.qos.logback.core.Layout;
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
 import lb.kafka.commons.KafkaHelper;
 import lb.kafka.commons.ModuleAware;
+import lb.kafka.encoder.KafkaMessageEncoder;
+import lb.kafka.encoder.PatternBasedMessageEncoder;
 import lb.kafka.producer.DeliveryType;
 import lb.kafka.producer.FailedCallBack;
 import lb.kafka.producer.ProductionFactory;
@@ -16,7 +17,7 @@ import lb.kafka.producer.transport.Transporter;
  *     <li><b>topic </b> Topic name for kafka brokers</li>
  *     <li><b>deliveryType </b> Type of deliver to send payload to kafka brokers</li>
  *     <li><b>brokers </b> Comma separated string for for list of broker servers</li>
- *     <li><b>layout </b> {@link Layout} layout from logback to encode log event message</li>
+ *     <li><b>encoder </b> {@link KafkaMessageEncoder} encoder to encode log event message</li>
  * </ul>
  *
  * @author princearora
@@ -38,10 +39,7 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
      */
     private String brokers;
 
-    /**
-     * logback message layout.
-     */
-    private Layout<E> layout;
+    private KafkaMessageEncoder<E> encoder;
 
     private Transporter transporter;
 
@@ -69,12 +67,12 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
         this.brokers = brokers;
     }
 
-    public Layout<E> getLayout() {
-        return layout;
+    public KafkaMessageEncoder<E> getEncoder() {
+        return encoder;
     }
 
-    public void setLayout(Layout<E> layout) {
-        this.layout = layout;
+    public void setEncoder(KafkaMessageEncoder<E> encoder) {
+        this.encoder = encoder;
     }
 
     public void start() {
@@ -107,15 +105,16 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
         }
     }
 
+    /**
+     * The Logging event and the payload will be provided to the transporter
+     * and will be forwarded to kafka brokers.
+     *
+     * @param event
+     */
     @Override
     protected void append(E event) {
-        byte[] bytes;
-        if (this.layout != null) {
-            bytes = this.layout.doLayout(event).getBytes();
-        } else {
-            bytes = event.toString().getBytes();
-        }
-        this.transporter.transport(bytes, new FailedCallBack());
+        final byte[] payload = this.encoder.doEncode(event);
+        this.transporter.transport(payload, new FailedCallBack());
     }
 
     /**
@@ -157,6 +156,15 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
         ModuleAware.CONTEXT.setTopic(this.topic);
         ModuleAware.CONTEXT.setBrokers(brokers);
         ModuleAware.CONTEXT.setDeliveryType(this.getDeliveryOption());
+
+        /**
+         * default encoder if nothing provided in configuration.
+         */
+        if (this.encoder == null) {
+            this.encoder = new PatternBasedMessageEncoder<E>();
+            this.encoder.setContext(this.getContext());
+        }
+
         return status;
     }
 }
