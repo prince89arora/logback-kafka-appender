@@ -162,7 +162,7 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
          */
         if (this.encoder == null) {
             this.encoder = new PatternBasedMessageEncoder<E>();
-            this.encoder.setContext(this.getContext());
+            this.encoder.start();
         }
 
         return status;

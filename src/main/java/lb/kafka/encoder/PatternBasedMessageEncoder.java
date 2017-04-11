@@ -2,6 +2,7 @@ package lb.kafka.encoder;
 
 import ch.qos.logback.classic.PatternLayout;
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.Context;
 
 /**
  * Implementation for Kafka Message encoder for pattern based layout encoding.
@@ -38,7 +39,6 @@ public class PatternBasedMessageEncoder<E> extends KafkaMessageEncoder<E> {
         }
         layout.setPattern(this.getPattern());
         layout.start();
-
     }
 
     @Override

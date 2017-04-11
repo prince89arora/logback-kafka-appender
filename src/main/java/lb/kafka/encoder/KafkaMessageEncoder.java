@@ -1,6 +1,7 @@
 package lb.kafka.encoder;
 
 import ch.qos.logback.core.Context;
+import ch.qos.logback.core.spi.ContextAwareBase;
 import ch.qos.logback.core.spi.LifeCycle;
 
 /**
@@ -13,12 +14,7 @@ import ch.qos.logback.core.spi.LifeCycle;
  *
  * @author princearora
  */
-public abstract class KafkaMessageEncoder<E> implements LifeCycle {
-
-    /**
-     * Logger context
-     */
-    protected Context context;
+public abstract class KafkaMessageEncoder<E> extends ContextAwareBase implements LifeCycle {
 
     /**
      * Status indicator.
@@ -49,12 +45,4 @@ public abstract class KafkaMessageEncoder<E> implements LifeCycle {
      * @return
      */
     public abstract byte[] doEncode(E event);
-
-    public Context getContext() {
-        return this.context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
 }
