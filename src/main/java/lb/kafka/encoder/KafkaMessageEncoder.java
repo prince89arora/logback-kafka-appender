@@ -27,17 +27,17 @@ public abstract class KafkaMessageEncoder<E> implements LifeCycle {
 
     @Override
     public void start() {
-        this.started = true;
+        started = true;
     }
 
     @Override
     public void stop() {
-        this.started = false;
+        started = false;
     }
 
     @Override
     public boolean isStarted() {
-        return this.started;
+        return started;
     }
 
     /**

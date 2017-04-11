@@ -18,30 +18,33 @@ public class PatternBasedMessageEncoder<E> extends KafkaMessageEncoder<E> {
     /**
      * Pattern layout
      */
-    private PatternLayout layout;
+    private static PatternLayout layout;
 
     /**
      * Default pattern is no pattern provided in configuration.
      */
-    private static final String DEFAULT_PATTER = "%d{yyyy-MM-dd HH:mm:ss} - %msg%n";
+    private static final String DEFAULT_PATTER = "%d{yyyy-MM-dd HH:mm:ss} %-5level - %msg%n";
 
     @Override
     public void start() {
-        this.started = true;
-        this.layout = new PatternLayout();
-        this.layout.setContext(this.getContext());
+        started = true;
+        layout = new PatternLayout();
+        layout.setContext(this.getContext());
 
         if (this.pattern == null || this.pattern.equals("")) {
-            this.layout.setPattern(DEFAULT_PATTER);
+            layout.setPattern(DEFAULT_PATTER);
+            layout.start();
             return;
         }
-        this.layout.setPattern(this.getPattern());
+        layout.setPattern(this.getPattern());
+        layout.start();
+
     }
 
     @Override
     public void stop() {
-        this.started = false;
-        this.layout = null;
+        started = false;
+        layout = null;
     }
 
     public String getPattern() {
@@ -60,6 +63,6 @@ public class PatternBasedMessageEncoder<E> extends KafkaMessageEncoder<E> {
      */
     @Override
     public byte[] doEncode(E event) {
-        return this.layout.doLayout( (ILoggingEvent) event ).getBytes();
+        return layout.doLayout( (ILoggingEvent) event ).getBytes();
     }
 }
