@@ -37,7 +37,7 @@ public class YieldTransporter implements Transporter {
      *                Payload/ message to be sent to kafka.
      *
      * @param callback
-     *                {@link Callback} in case ot message failure.
+     *                {@link Callback} in case of message failure.
      *
      * @return
      */

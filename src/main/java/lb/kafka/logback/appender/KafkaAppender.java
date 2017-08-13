@@ -30,7 +30,7 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
     private String topic;
 
     /**
-     * dleivery type to transportation.
+     * delivery type to transportation.
      */
     private String deliveryType;
 
