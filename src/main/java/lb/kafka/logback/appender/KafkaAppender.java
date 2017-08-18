@@ -20,7 +20,7 @@ import lb.kafka.producer.transport.Transporter;
  *     <li><b>encoder </b> {@link KafkaMessageEncoder} encoder to encode log event message</li>
  * </ul>
  *
- * @author princearora
+ * @author prince.arora
  */
 public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
 

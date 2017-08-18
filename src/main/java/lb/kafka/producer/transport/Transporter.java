@@ -7,7 +7,7 @@ import org.apache.kafka.clients.producer.Callback;
  * implementation is based on the Delivery Type provider in appender
  * configuration {@link lb.kafka.producer.DeliveryType}.
  *
- * @author princearora
+ * @author prince.arora
  */
 public interface Transporter {
 

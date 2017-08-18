@@ -6,7 +6,7 @@ import ch.qos.logback.classic.spi.ILoggingEvent;
 /**
  * Implementation for Kafka Message encoder for pattern based layout encoding.
  *
- * @author princearora
+ * @author prince.arora
  */
 public class PatternBasedMessageEncoder<E> extends KafkaMessageEncoder<E> {
 

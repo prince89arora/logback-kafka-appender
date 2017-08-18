@@ -6,7 +6,7 @@ import org.apache.kafka.clients.producer.Producer;
 /**
  * Transporter factory to initialize transporter for production.
  *
- * @author princearora
+ * @author prince.arora
  */
 public final class TransporterFactory {
 
@@ -32,6 +32,7 @@ public final class TransporterFactory {
                 break;
 
             default:
+                transporter = new NormalTransporter(producer);
                 break;
         }
         return transporter;

@@ -11,7 +11,7 @@ import java.util.concurrent.Future;
  * Normal Transporter for kafka brokers.
  * {@link lb.kafka.producer.DeliveryType#NORMAL}
  *
- * @author princearora
+ * @author prince.arora
  */
 public class NormalTransporter implements Transporter {
 
@@ -42,8 +42,7 @@ public class NormalTransporter implements Transporter {
      */
     @Override
     public boolean transport(final byte[] bytes, Callback callback) {
-        //TODO: Make use of callback
-        final Future<RecordMetadata> future = this.producer.send(KafkaHelper.prepareRecord(bytes));
+        final Future<RecordMetadata> future = this.producer.send(KafkaHelper.prepareRecord(bytes), callback);
         return future.isDone();
     }
 

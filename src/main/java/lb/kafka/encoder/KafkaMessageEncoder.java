@@ -12,7 +12,7 @@ import ch.qos.logback.core.spi.LifeCycle;
  * Implementation for {@link #doEncode(Object)} can be provided based on requirements
  * for encoding.
  *
- * @author princearora
+ * @author prince.arora
  */
 public abstract class KafkaMessageEncoder<E> extends ContextAwareBase implements LifeCycle {
 

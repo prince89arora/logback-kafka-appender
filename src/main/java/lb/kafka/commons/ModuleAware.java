@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * Enum to maintain state of kafka configurations and appender.
  *
- * @author princearora
+ * @author prince.arora
  */
 public enum ModuleAware {
 

@@ -14,7 +14,7 @@ import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_
 /**
  * Helper class to perform utility tasks.
  *
- * @author princearora
+ * @author prince.arora
  */
 public final class KafkaHelper {
 

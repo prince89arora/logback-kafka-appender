@@ -12,7 +12,7 @@ import org.apache.kafka.clients.producer.Producer;
  * This will be used ba appender to initialize the producer and transporter.
  * And send payload to kafka brokers based on log events.
  *
- * @author princearora
+ * @author prince.arora
  */
 public class ProductionFactory {
 

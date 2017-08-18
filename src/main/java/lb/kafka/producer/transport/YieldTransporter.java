@@ -12,7 +12,7 @@ import java.util.concurrent.Future;
  * will be checked and status will be returned.
  * {@link lb.kafka.producer.DeliveryType#YIElD}
  *
- * @author princearora
+ * @author prince.arora
  */
 public class YieldTransporter implements Transporter {
 
@@ -43,8 +43,7 @@ public class YieldTransporter implements Transporter {
      */
     @Override
     public boolean transport(byte[] bytes, Callback callback) {
-        //TODO: Make use of callback
-        final Future<RecordMetadata> future = this.producer.send(KafkaHelper.prepareRecord(bytes));
+        final Future<RecordMetadata> future = this.producer.send(KafkaHelper.prepareRecord(bytes), callback);
 
         while (!future.isDone()) {
             //wait for it to complete
