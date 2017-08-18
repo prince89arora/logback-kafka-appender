@@ -7,9 +7,6 @@ import org.junit.Test;
  */
 public class kafkaAppenderTest {
 
-    @Test
-    private void testAppender() {
-        //TODO test case for appender.
-    }
+
 
 }
