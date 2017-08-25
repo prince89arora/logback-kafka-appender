@@ -14,7 +14,9 @@ public class FailedCallBack implements Callback {
      * Default action performed on failed transportation.
      *
      * @param recordMetadata
+     *                          {@link RecordMetadata}
      * @param e
+     *                          {@link Exception}
      */
     @Override
     public void onCompletion(RecordMetadata recordMetadata, Exception e) {

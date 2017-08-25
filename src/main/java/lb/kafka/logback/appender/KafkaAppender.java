@@ -171,6 +171,7 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
      * and will be forwarded to kafka brokers.
      *
      * @param event
+     *                  Log event.
      */
     @Override
     protected void append(E event) {

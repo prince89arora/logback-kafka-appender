@@ -42,7 +42,9 @@ public abstract class KafkaMessageEncoder<E> extends ContextAwareBase implements
      * convert it into byte[].
      *
      * @param event
+     *                  Log event
      * @return
+     *                  log message in byte array.
      */
     public abstract byte[] doEncode(E event);
 }

@@ -11,14 +11,20 @@ import org.apache.kafka.clients.producer.Producer;
 public final class TransporterFactory {
 
     /**
-     * Prepare Transporter for production based on Delivery type {@link DeliveryType}
-     * <p/>
+     * <p>Prepare Transporter for production based on Delivery type {@link DeliveryType}</p>
+     * <p>
      * Provide {@link Producer} to transporter that will be used to communicate and
      * send data to kafka broker.
+     *</p>
      *
      * @param deliveryType
+     *             {@link DeliveryType} to be used for transportation.
+     *
      * @param producer
+     *             producer for kafka.
      * @return
+     *             {@link Transporter}
+     *
      */
     public static Transporter getTransporter(DeliveryType deliveryType, Producer<byte[], byte[]> producer) {
         Transporter transporter = null;

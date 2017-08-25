@@ -56,9 +56,6 @@ public class PatternBasedMessageEncoder<E> extends KafkaMessageEncoder<E> {
 
     /**
      * {@inheritDoc}
-     *
-     * @param event
-     * @return
      */
     @Override
     public byte[] doEncode(E event) {

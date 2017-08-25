@@ -10,10 +10,12 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 public final class KafkaHelper {
 
     /**
-     * Prepare {@link ProducerRecord<byte[], byte[]>}
+     * Prepare {@link ProducerRecord} for transportation.
      *
      * @param payload
+     *                  byte array form of message.
      * @return
+     *                  {@link ProducerRecord}
      */
     public static ProducerRecord<byte[], byte[]> prepareRecord(byte[] payload) {
         ProducerRecord<byte[], byte[]> record = new ProducerRecord<byte[], byte[]>(
@@ -24,11 +26,14 @@ public final class KafkaHelper {
     }
 
     /**
-     * Prepare {@link ProducerRecord<byte[], byte[]>}
+     * Prepare {@link ProducerRecord} for transportation.
      *
      * @param payload
+     *                  byte array form of message.
      * @param key
+     *                  key to be used on kafka.
      * @return
+     *                  {@link ProducerRecord}
      */
     public static ProducerRecord<byte[], byte[]> prepareRecord(byte[] payload, byte[] key) {
         ProducerRecord<byte[], byte[]> record = new ProducerRecord<byte[], byte[]>(

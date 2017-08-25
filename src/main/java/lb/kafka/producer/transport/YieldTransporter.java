@@ -8,9 +8,11 @@ import org.apache.kafka.clients.producer.RecordMetadata;
 import java.util.concurrent.Future;
 
 /**
+ * <p>
  * Implementation for YieldTransporter, for every delivery completion
  * will be checked and status will be returned.
  * {@link lb.kafka.producer.DeliveryType#YIElD}
+ * </p>
  *
  * @author prince.arora
  */
@@ -25,6 +27,7 @@ public class YieldTransporter implements Transporter {
      * Initialize by providing producer instance.
      *
      * @param producer
+     *             kafka producer.
      */
     public YieldTransporter(Producer<byte[], byte[]> producer) {
         this.producer = producer;
@@ -32,14 +35,6 @@ public class YieldTransporter implements Transporter {
 
     /**
      * {@inheritDoc}
-     *
-     * @param bytes
-     *                Payload/ message to be sent to kafka.
-     *
-     * @param callback
-     *                {@link Callback} in case of message failure.
-     *
-     * @return
      */
     @Override
     public boolean transport(byte[] bytes, Callback callback) {

@@ -7,10 +7,11 @@ import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 
 /**
- * Factory class to create {@link Producer} and {@link Transporter}
- * <p/>
+ * <p>Factory class to create {@link Producer} and {@link Transporter}</p>
+ * <p>
  * This will be used ba appender to initialize the producer and transporter.
  * And send payload to kafka brokers based on log events.
+ *</p>
  *
  * @author prince.arora
  */
@@ -40,6 +41,7 @@ public class ProductionFactory {
      * configured in appender configuration.
      *
      * @return
+     *              {@link Transporter} to be used for kafka.
      */
     public static Transporter transporter() {
         if (transporter == null) {

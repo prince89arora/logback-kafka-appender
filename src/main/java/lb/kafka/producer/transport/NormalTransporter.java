@@ -24,6 +24,7 @@ public class NormalTransporter implements Transporter {
      * Initialize transporter with producer instance.
      *
      * @param producer
+     *                      kafka producer to send messages.
      */
     public NormalTransporter(Producer<byte[], byte[]> producer) {
         this.producer = producer;
@@ -39,6 +40,7 @@ public class NormalTransporter implements Transporter {
      *                {@link Callback} in case ot message failure.
      *
      * @return
+     *                 boolean to indicate the result.
      */
     @Override
     public boolean transport(final byte[] bytes, Callback callback) {
