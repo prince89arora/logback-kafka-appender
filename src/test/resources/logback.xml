@@ -8,7 +8,7 @@
             </Pattern>
         </encoder>
         <topic>test</topic>
-        <brokers>127.0.0.1:9092</brokers>
+        <brokers>192.168.1.167:9092</brokers>
         <deliveryType>YIElD</deliveryType>
     </appender>
 
