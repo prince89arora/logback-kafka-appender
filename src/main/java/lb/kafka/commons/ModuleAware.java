@@ -17,6 +17,9 @@ public enum ModuleAware {
     private DeliveryType deliveryType;
     private Map<String, Object> producerConfig;
     private String brokers;
+    private String acks;
+    private long bufferMemory;
+    private int batchSize;
 
     public String getTopic() {
         return topic;
@@ -50,4 +53,27 @@ public enum ModuleAware {
         this.brokers = brokers;
     }
 
+    public String getAcks() {
+        return acks;
+    }
+
+    public void setAcks(String acks) {
+        this.acks = acks;
+    }
+
+    public long getBufferMemory() {
+        return bufferMemory;
+    }
+
+    public void setBufferMemory(long bufferMemory) {
+        this.bufferMemory = bufferMemory;
+    }
+
+    public int getBatchSize() {
+        return batchSize;
+    }
+
+    public void setBatchSize(int batchSize) {
+        this.batchSize = batchSize;
+    }
 }

@@ -1,7 +1,6 @@
 package lb.kafka.logback.appender;
 
 import ch.qos.logback.core.UnsynchronizedAppenderBase;
-import lb.kafka.commons.KafkaHelper;
 import lb.kafka.commons.ModuleAware;
 import lb.kafka.encoder.KafkaMessageEncoder;
 import lb.kafka.encoder.PatternBasedMessageEncoder;
@@ -9,6 +8,17 @@ import lb.kafka.producer.DeliveryType;
 import lb.kafka.producer.FailedCallBack;
 import lb.kafka.producer.ProductionFactory;
 import lb.kafka.producer.transport.Transporter;
+import org.apache.kafka.common.serialization.ByteArraySerializer;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.apache.kafka.clients.producer.ProducerConfig.ACKS_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.BATCH_SIZE_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.BOOTSTRAP_SERVERS_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.BUFFER_MEMORY_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG;
 
 /**
  * Logback Appender to send log messages to Apache Kafka brokers.
@@ -39,6 +49,21 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
      */
     private String brokers;
 
+    /**
+     * Acknowledgments the producer.
+     */
+    private String acks = "1";
+
+    /**
+     * Memory to be used for buffer records.
+     */
+    private long bufferMemory = 33554432;
+
+    /**
+     * Size for batch records.
+     */
+    private int batchSize = 16384;
+
     private KafkaMessageEncoder<E> encoder;
 
     private Transporter transporter;
@@ -67,6 +92,42 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
         this.brokers = brokers;
     }
 
+    public void setBrokers(String[] brokers) {
+        if (brokers != null) {
+            for(String node : brokers) {
+                if (this.brokers == null || this.brokers.equals("")) {
+                    this.brokers = node;
+                } else {
+                    this.brokers = "," + node;
+                }
+            }
+        }
+    }
+
+    public String getAcks() {
+        return acks;
+    }
+
+    public void setAcks(String acks) {
+        this.acks = acks;
+    }
+
+    public long getBufferMemory() {
+        return bufferMemory;
+    }
+
+    public void setBufferMemory(long bufferMemory) {
+        this.bufferMemory = bufferMemory;
+    }
+
+    public int getBatchSize() {
+        return batchSize;
+    }
+
+    public void setBatchSize(int batchSize) {
+        this.batchSize = batchSize;
+    }
+
     public KafkaMessageEncoder<E> getEncoder() {
         return encoder;
     }
@@ -83,7 +144,7 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
         boolean status = this.initialize();
 
         if (status) {
-            ModuleAware.CONTEXT.setProducerConfig(KafkaHelper.prepareConfiguration());
+            ModuleAware.CONTEXT.setProducerConfig(this.prepareConfiguration());
             ProductionFactory.build();
             this.transporter = ProductionFactory.transporter();
             this.started = true;
@@ -156,6 +217,9 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
         ModuleAware.CONTEXT.setTopic(this.topic);
         ModuleAware.CONTEXT.setBrokers(brokers);
         ModuleAware.CONTEXT.setDeliveryType(this.getDeliveryOption());
+        ModuleAware.CONTEXT.setAcks(this.acks);
+        ModuleAware.CONTEXT.setBufferMemory(this.bufferMemory);
+        ModuleAware.CONTEXT.setBatchSize(this.batchSize);
 
         /**
          * default encoder if nothing provided in configuration.
@@ -166,5 +230,22 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
         }
 
         return status;
+    }
+
+    /**
+     * Prepare final configuration map for producer to initiate kafka producer instance
+     * Configurations will be picked up from {@link ModuleAware}
+     *
+     * @return
+     */
+    private static Map<String, Object> prepareConfiguration() {
+        Map<String, Object> properties = new HashMap<>();
+        properties.put(BOOTSTRAP_SERVERS_CONFIG, ModuleAware.CONTEXT.getBrokers());
+        properties.put(KEY_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
+        properties.put(VALUE_SERIALIZER_CLASS_CONFIG, ByteArraySerializer.class.getName());
+        properties.put(BATCH_SIZE_CONFIG, ModuleAware.CONTEXT.getBatchSize());
+        properties.put(ACKS_CONFIG, ModuleAware.CONTEXT.getAcks());
+        properties.put(BUFFER_MEMORY_CONFIG, ModuleAware.CONTEXT.getBufferMemory());
+        return properties;
     }
 }

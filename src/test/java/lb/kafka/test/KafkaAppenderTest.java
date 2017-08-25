@@ -56,9 +56,7 @@ public class KafkaAppenderTest {
             logger.addAppender(kafkaAppender);
             logger.info("Test info from programmable appender..");
             status = true;
-        } catch (Exception e) {
-
-        }
+        } catch (Exception e) {}
         assertTrue(status);
     }
 
