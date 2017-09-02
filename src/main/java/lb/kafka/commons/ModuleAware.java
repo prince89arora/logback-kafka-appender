@@ -20,6 +20,9 @@ public enum ModuleAware {
     private String acks;
     private long bufferMemory;
     private int batchSize;
+    private String compressionType;
+    private int retries;
+    private long maxIdleConnectionTime;
 
     public String getTopic() {
         return topic;
@@ -75,5 +78,29 @@ public enum ModuleAware {
 
     public void setBatchSize(int batchSize) {
         this.batchSize = batchSize;
+    }
+
+    public String getCompressionType() {
+        return compressionType;
+    }
+
+    public void setCompressionType(String compressionType) {
+        this.compressionType = compressionType;
+    }
+
+    public int getRetries() {
+        return retries;
+    }
+
+    public void setRetries(int retries) {
+        this.retries = retries;
+    }
+
+    public long getMaxIdleConnectionTime() {
+        return maxIdleConnectionTime;
+    }
+
+    public void setMaxIdleConnectionTime(long maxIdleConnectionTime) {
+        this.maxIdleConnectionTime = maxIdleConnectionTime;
     }
 }

@@ -17,7 +17,10 @@ import static org.apache.kafka.clients.producer.ProducerConfig.ACKS_CONFIG;
 import static org.apache.kafka.clients.producer.ProducerConfig.BATCH_SIZE_CONFIG;
 import static org.apache.kafka.clients.producer.ProducerConfig.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.clients.producer.ProducerConfig.BUFFER_MEMORY_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.COMPRESSION_TYPE_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.CONNECTIONS_MAX_IDLE_MS_CONFIG;
 import static org.apache.kafka.clients.producer.ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG;
+import static org.apache.kafka.clients.producer.ProducerConfig.RETRIES_CONFIG;
 import static org.apache.kafka.clients.producer.ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG;
 
 /**
@@ -58,6 +61,28 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
      * Memory to be used for buffer records.
      */
     private long bufferMemory = 33554432;
+
+    /**
+     * Specify the final compression type for a given topic.
+     * This configuration accepts the standard compression
+     * codecs ('gzip', 'snappy', 'lz4'). It additionally accepts
+     * 'uncompressed' which is equivalent to no compression; and
+     * 'producer' which means retain the original compression codec
+     * set by the producer.
+     */
+    private String compressionType = "producer";
+
+    /**
+     * Setting a value greater than zero will cause the client to resend
+     * any record whose send fails with a potentially transient error.
+     * Default value is 0.
+     */
+    private int retries = 0;
+
+    /**
+     * Close idle connections after the number of milliseconds specified by this config.
+     */
+    private long maxIdleConnectionTime = 540000;
 
     /**
      * Size for batch records.
@@ -118,6 +143,30 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
 
     public void setBufferMemory(long bufferMemory) {
         this.bufferMemory = bufferMemory;
+    }
+
+    public String getCompressionType() {
+        return compressionType;
+    }
+
+    public void setCompressionType(String compressionType) {
+        this.compressionType = compressionType;
+    }
+
+    public int getRetries() {
+        return retries;
+    }
+
+    public void setRetries(int retries) {
+        this.retries = retries;
+    }
+
+    public long getMaxIdleConnectionTime() {
+        return maxIdleConnectionTime;
+    }
+
+    public void setMaxIdleConnectionTime(long maxIdleConnectionTime) {
+        this.maxIdleConnectionTime = maxIdleConnectionTime;
     }
 
     public int getBatchSize() {
@@ -221,6 +270,9 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
         ModuleAware.CONTEXT.setAcks(this.acks);
         ModuleAware.CONTEXT.setBufferMemory(this.bufferMemory);
         ModuleAware.CONTEXT.setBatchSize(this.batchSize);
+        ModuleAware.CONTEXT.setCompressionType(this.compressionType);
+        ModuleAware.CONTEXT.setRetries(this.retries);
+        ModuleAware.CONTEXT.setMaxIdleConnectionTime(this.maxIdleConnectionTime);
 
         /**
          * default encoder if nothing provided in configuration.
@@ -247,6 +299,9 @@ public class KafkaAppender<E> extends UnsynchronizedAppenderBase<E> {
         properties.put(BATCH_SIZE_CONFIG, ModuleAware.CONTEXT.getBatchSize());
         properties.put(ACKS_CONFIG, ModuleAware.CONTEXT.getAcks());
         properties.put(BUFFER_MEMORY_CONFIG, ModuleAware.CONTEXT.getBufferMemory());
+        properties.put(COMPRESSION_TYPE_CONFIG, ModuleAware.CONTEXT.getCompressionType());
+        properties.put(RETRIES_CONFIG, ModuleAware.CONTEXT.getRetries());
+        properties.put(CONNECTIONS_MAX_IDLE_MS_CONFIG, ModuleAware.CONTEXT.getMaxIdleConnectionTime());
         return properties;
     }
 }
